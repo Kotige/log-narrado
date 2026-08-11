@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #fbfaf6;
+  --color-ink: #2b2a28;
+  --color-moss: #5b7a5e;
+  --color-moss-dark: #435c46;
+  --color-terracotta: #c76b3f;
+  --color-sand: #e3ddd0;
+  --color-sand-line: #d8d0bd;
+  --color-muted: #6b6a63;
+
+  --font-display: "Instrument Serif", serif;
+  --font-sans: Manrope, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-ink font-sans;
+  }
+
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
