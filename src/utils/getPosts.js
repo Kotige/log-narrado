@@ -29,6 +29,14 @@ function parseFrontmatter(raw) {
         const key = line.slice(0, separatorIndex).trim();
         let value = line.slice(separatorIndex + 1).trim();
 
+        const isList = value.startsWith("[") && value.endsWith("]");
+
+        if (isList) {
+            data[key] = value.slice(1, -1).split(",").map((item) => item.trim().replace(/^["']|["']$/g, "")
+            ).filter(Boolean);
+            return;
+        }
+
         const isQuoted = (value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"));
 
         if (isQuoted) {
@@ -54,6 +62,7 @@ export function getAllPosts() {
             title: data.title ?? "",
             date: data.date ?? "",
             category: data.category ?? "",
+            tags: Array.isArray(data.tags) ? data.tags : [],
             excerpt: data.excerpt ?? "",
         };
     });
@@ -77,4 +86,21 @@ export function getRecentPosts(limit = 4) {
     const sorted = [...posts].sort((a,b) => new Date(b.date) - new Date(a.date));
 
     return sorted.slice(1, 1 + limit);
+}
+
+// Retorna todas as tags usadas nos posts, sem repetição, com a contagem de
+// posts em que cada uma aparece.
+// Útil para alimentar a nuvem de tags na sidebar.
+
+export function getAllTags() {
+    const posts = getAllPosts();
+    const counts = new Map();
+
+    posts.forEach((post) => {
+        (post.tags ?? []).forEach((tag) => {
+            counts.set(tag, (counts.get(tag) ?? 0) + 1);
+        });
+    });
+
+    return [...counts.entries()].map(([tag, count]) => ({ tag, count }));
 }
