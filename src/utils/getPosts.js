@@ -1,0 +1,70 @@
+// Carrega todo arquivo .md de content/posts como texto bruto.
+// Ajusta o caminho do glob se a pasta content/posts estiver em outro lugar
+// relativo a este arquivo (ex: ""../content/posts/*.md").
+
+const modules = import.meta.glob("/src/content/posts/*.md", {
+    query: "?raw",
+    import: "default",
+    eager: true,
+});
+
+// Parser de frontmatter simples (chave: valor), sem dependências externas.
+// Suporta valores entre aspas simples/duplas. Não suporta listas/objetos
+// aninhados no frontmatter - só pares chave-valor de uma linha.
+
+function parseFrontmatter(raw) {
+    const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+
+    if (!match) {
+        return {data: {}, content: raw};
+    }
+
+    const [, rawFrontmatter, content] = match;
+    const data = {};
+
+    rawFrontmatter.split(/\r?\n/).forEach((line) =>{
+        const separatorIndex = line.indexOf(":");
+        if (separatorIndex === -1) return;
+
+        const key = line.slice(0, separatorIndex).trim();
+        let value = line.slice(separatorIndex + 1).trim();
+
+        const isQuoted = (value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"));
+
+        if (isQuoted) {
+            value = value.slice(1, -1);
+        }
+
+        data[key] = value;
+    });
+    return {data, content};
+}
+
+// Retorna todos os posts, cada um com {slug, title, date, category, excerpt, content}.
+// slug é derivado do nome do arquivo.
+
+export function getAllPosts() {
+    return Object.entries(modules).map(([Path2D, raw]) => {
+        const { data, content } = parseFrontmatter(raw);
+        const slug = Path2D.split("/").pop().replace(/\.md$/, "");
+
+        return {
+            slug,
+            content,
+            title: data.title ?? "",
+            date: data.date ?? "",
+            category: data.category ?? "",
+            excerpt: data.excerpt ?? "",
+        };
+    });
+}
+
+// Retorna o post mais recente com base no campo "date" do frontmatter.
+// Espera formato reconhecido por new Date(), ex: "2026-01-10".
+
+export function getLatestPost() {
+    const posts = getAllPosts();
+    if (posts.length === 0) return null;
+
+    return [...posts].sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+}
