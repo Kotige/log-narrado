@@ -68,3 +68,13 @@ export function getLatestPost() {
 
     return [...posts].sort((a,b) => new Date(b.date) - new Date(a.date))[0];
 }
+
+// Retorna os "limit" posts seguintes ao mais recente (que aparece no Hero),
+// ordernados do mais novo pro mais antigo, sem repetir o primeiro.
+
+export function getRecentPosts(limit = 4) {
+    const posts = getAllPosts();
+    const sorted = [...posts].sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    return sorted.slice(1, 1 + limit);
+}
