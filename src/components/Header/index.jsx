@@ -47,7 +47,7 @@ export default function Header({ activeHref = "/" }) {
                 >
                     {link.label}
                     {isActive && (
-                    <span className="absolute bottom-[3px] left-3.5 right-3.5 h-[2px] bg-terracotta" />
+                    <span className="absolute bottom-[3px] left-3.5 right-3.5 h-[2px] bg-terracota" />
                     )}
                 </a>
                 );
