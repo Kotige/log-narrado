@@ -25,7 +25,7 @@ const CATEGORIES = [
 export default function ProjectsCategories() {
   return (
     <div className="flex w-full flex-col gap-6 border-t border-sand-line pt-10">
-      <h2 className="font-display text-4xl text-ink">
+      <h2 className="font-display text-3xl text-ink">
         <Link to={"/projetos"}>Projetos</Link>
       </h2>
 
