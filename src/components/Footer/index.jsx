@@ -87,12 +87,9 @@ export default function Footer() {
           </div>
         </div>
         {/* Linha inferior */}
-        <div className="mt-10 pt-6 border-t border-sand-line flex flex-col-reverse md:flex-row items-center justify-between gap-3">
+        <div className="mt-10 pt-6 border-t border-sand-line flex flex-col-reverse md:flex-row items-center justify-center gap-3">
           <p className="font-mono text-xs text-muted">
             © {year} Log Narrado. Todos os direitos reservados.
-          </p>
-          <p className="font-mono text-xs text-muted">
-            Construído com React &amp; Tailwind.
           </p>
         </div>
       </div>
