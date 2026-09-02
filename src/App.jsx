@@ -3,6 +3,7 @@ import Home from "./routes/Home";
 import Post from "./routes/Post";
 import Projects from "./routes/Projects";
 import ProjectCategory from "./routes/ProjectCategory";
+import Autor from "./routes/Autor";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/posts/:slug" element={<Post />} />
         <Route path="/projetos" element={<Projects />} />
         <Route path="/projetos/:slug" element={<ProjectCategory />} />
+        <Route path="/autor" element={<Autor />} />
       </Routes>
     </BrowserRouter>
   );
