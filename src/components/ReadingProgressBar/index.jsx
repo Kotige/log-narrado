@@ -32,7 +32,7 @@ export default function ReadingProgressBar({ articleRef, accentColor }) {
   }, [articleRef]);
 
   return (
-    <div className="fixed left-0 top-0 z-50 h-[3px] w-full bg-transparent">
+    <div className="fixed left-0 top-0 z-50 h-0.75 w-full bg-transparent">
       <div
         className="h-full transition-[width] duration-150 ease-out"
         style={{ width: `${progress}%`, backgroundColor: accentColor }}
