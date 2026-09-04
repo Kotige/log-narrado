@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaLaptopCode, FaChartBar, FaAtom } from "react-icons/fa";
+import { FaLaptopCode, FaChartBar, FaFeatherAlt } from "react-icons/fa";
 
 const CATEGORIES = [
   {
@@ -15,10 +15,10 @@ const CATEGORIES = [
     Icon: FaChartBar,
   },
   {
-    slug: "physics-lab",
-    label: "Physics Lab",
-    description: "Simulações e Experimentos",
-    Icon: FaAtom,
+    slug: "fabulario",
+    label: "Fabulário",
+    description: "Fantasia, terror e ficção",
+    Icon: FaFeatherAlt,
   },
 ];
 

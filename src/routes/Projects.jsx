@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaLaptopCode, FaChartBar, FaAtom } from "react-icons/fa";
+import { FaLaptopCode, FaChartBar, FaFeatherAlt } from "react-icons/fa";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -19,11 +19,11 @@ const CATEGORIES = [
     Icon: FaChartBar,
   },
   {
-    slug: "physics-lab",
-    label: "Physics Lab",
+    slug: "fabulario",
+    label: "Fabulário",
     description:
-      "Simulações e experimentos que exploram conceitos de física através de código e visualização.",
-    Icon: FaAtom,
+      "Contos de fantasia, terror e ficção científica — narrativas curtas publicadas aqui.",
+    Icon: FaFeatherAlt,
   },
 ];
 
