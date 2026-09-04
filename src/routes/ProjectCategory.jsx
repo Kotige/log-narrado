@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { FaLaptopCode, FaChartBar, FaAtom } from "react-icons/fa";
+import { FaLaptopCode, FaChartBar, FaFeatherAlt } from "react-icons/fa";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -16,11 +16,11 @@ const CATEGORIES = {
     description:
       "Projetos de análise de dados, modelos preditivos e visualizações — um jeito de explorar padrões e histórias escondidas em conjuntos de dados, unindo estatística, programação e uma boa dose de curiosidade sobre o que os números têm a dizer.",
   },
-  "physics-lab": {
-    label: "Physics Lab",
-    Icon: FaAtom,
+  fabulario: {
+    label: "Fabulário",
+    Icon: FaFeatherAlt,
     description:
-      "Simulações e experimentos que exploram conceitos de física através de código e visualização — uma forma de tornar tangível o que normalmente, na mente das pessoas, vive só em equações, unindo a paixão por física com a prática de programar.",
+      "Um espaço para contos de fantasia, terror e ficção científica — histórias curtas que nascem da mesma curiosidade que move o resto do Log Narrado, só que contada de um jeito diferente: não como registro, mas como narrativa.",
   },
 };
 
