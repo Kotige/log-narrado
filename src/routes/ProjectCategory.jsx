@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { FaLaptopCode, FaChartBar, FaFeatherAlt } from "react-icons/fa";
+import { FaLaptopCode, FaChartBar } from "react-icons/fa";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -15,12 +15,6 @@ const CATEGORIES = {
     Icon: FaChartBar,
     description:
       "Projetos de análise de dados, modelos preditivos e visualizações — um jeito de explorar padrões e histórias escondidas em conjuntos de dados, unindo estatística, programação e uma boa dose de curiosidade sobre o que os números têm a dizer.",
-  },
-  fabulario: {
-    label: "Fabulário",
-    Icon: FaFeatherAlt,
-    description:
-      "Um espaço para contos de fantasia, terror e ficção científica — histórias curtas que nascem da mesma curiosidade que move o resto do Log Narrado, só que contada de um jeito diferente: não como registro, mas como narrativa.",
   },
 };
 
