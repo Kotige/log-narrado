@@ -1,7 +1,7 @@
 const modules = import.meta.glob("/src/content/fabulario/*.md", {
   query: "?raw",
   import: "default",
-  eager: "true",
+  eager: true,
 });
 
 // Mesmo parser usado no resto do projeto.
@@ -67,7 +67,7 @@ export function getAllContos() {
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-export function getCountoBySlug(slug) {
+export function getContoBySlug(slug) {
   return getAllContos().find((conto) => conto.slug === slug) ?? null;
 }
 

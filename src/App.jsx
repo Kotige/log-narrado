@@ -6,6 +6,7 @@ import ProjectCategory from "./routes/ProjectCategory";
 import Autor from "./routes/Autor";
 import Changelog from "./routes/Changelog";
 import Posts from "./routes/Posts";
+import Conto from "./routes/Conto";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/posts/:slug" element={<Post />} />
+        <Route path="/fabulario/:slug" element={<Conto />} />
         <Route path="/projetos" element={<Projects />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/changelog" element={<Changelog />} />
