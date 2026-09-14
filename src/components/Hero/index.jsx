@@ -27,7 +27,7 @@ export default function Hero() {
         <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-terracota">
           Destaque
         </span>
-        <h1 className="font-display text-[clamp(2.75rem,6.8vw,8rem)] leading-[1.05] text-ink transition-colors duration-150 group-hover:text-moss-dark">
+        <h1 className="font-display text-[clamp(2.75rem,7vw,8rem)] leading-[1.05] text-ink transition-colors duration-150 group-hover:text-moss-dark">
           {post.title}
         </h1>
 
