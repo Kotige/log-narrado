@@ -21,13 +21,13 @@ export default function Hero() {
   return (
     <Link
       to={`/posts/${post.slug}`}
-      className="group flex w-full flex-col items-center justify-y-center bg-bg px-8 py-16 text-center no-underline md:h-[66.667vh] md:py-0"
+      className="group flex w-full flex-col items-center justify-y-center bg-bg px-8 py-16 text-center no-underline md:h-[66.667vh] md:items-start md:text-left md:py-0"
     >
-      <div className="mx-auto flex w-full max-w-240 flex-col items-center gap-4">
+      <div className="mx-auto flex w-full max-w-240 flex-col items-center md:items-start gap-4">
         <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-terracota">
           Destaque
         </span>
-        <h1 className="font-display text-[clamp(5.75rem, 9vw,12.5rem)] leading-[1.05] text-ink transition-colors duration-150 group-hover:text-moss-dark">
+        <h1 className="font-display text-[clamp(2.75rem,6.8vw,8rem)] leading-[1.05] text-ink transition-colors duration-150 group-hover:text-moss-dark">
           {post.title}
         </h1>
 
