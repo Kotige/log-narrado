@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { FiGithub, FiLinkedin, FiInstagram, FiRss } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiInstagram } from "react-icons/fi";
 
 const NAV_LINKS = [
   { label: "Posts", to: "/posts" },
@@ -20,7 +20,6 @@ const SOCIAL_LINKS = [
     href: "https://instagram.com/lognarrado",
     icon: FiInstagram,
   },
-  { label: "RSS", href: "/rss.xml", icon: FiRss },
 ];
 
 export default function Footer() {
@@ -62,7 +61,7 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Redes e RSS */}
+          {/* Redes */}
 
           <div>
             <p className="font-mono text-xs uppercase tracking-wider text-muted mb-4">
