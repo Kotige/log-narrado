@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BiMenu } from "react-icons/bi";
+import { BiMenu, BiX } from "react-icons/bi";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -29,11 +29,12 @@ export default function Header({ activeHref = "/" }) {
 
         {/* Mobile toggle */}
         <button
-          aria-label="Abrir menu"
+          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
           className="flex h-9.5 w-9.5 items-center justify-center md:hidden"
         >
-          <BiMenu size={26} />
+          {menuOpen ? <BiX size={32} /> : <BiMenu size={26} />}
         </button>
 
         {/* Nav — desktop */}
@@ -59,24 +60,31 @@ export default function Header({ activeHref = "/" }) {
       </div>
 
       {/* Nav — mobile */}
-      {menuOpen && (
-        <nav className="absolute left-0 right-0 top-full flex flex-col border-b border-sand-line bg-bg px-8 pb-5 pt-2 md:hidden">
-          {NAV_LINKS.map((link, i) => {
-            const isActive = link.href === activeHref;
-            return (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`border-sand-line px-1.5 py-3 text-[14.5px] font-medium no-underline ${
-                  i !== NAV_LINKS.length - 1 ? "border-b" : ""
-                } ${isActive ? "text-moss-dark" : "text-ink"}`}
-              >
-                {link.label}
-              </a>
-            );
-          })}
-        </nav>
-      )}
+      <nav
+        className={`flex flex-col overflow-hidden  bg-bg px-8 transition-[max-height,opacity] duration-300 ease-in-out md:hidden ${
+          menuOpen
+            ? "max-h-96 border-b-0 pb-5 pt-2 opacity-100"
+            : "max-h-0 border-b-0 pb-0 pt-0 opacity-0"
+        }`}
+      >
+        {NAV_LINKS.map((link, i) => {
+          const isActive = link.href === activeHref;
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`
+                  px-1.5 py-3 text-[14.5px] font-medium no-underline
+                  ${
+                    i !== NAV_LINKS.lenth - 1 ? "border-b" : ""
+                  } ${isActive ? "text-moss-dark" : "text-ink"}
+                `}
+            >
+              {link.label}
+            </a>
+          );
+        })}
+      </nav>
     </header>
   );
 }
