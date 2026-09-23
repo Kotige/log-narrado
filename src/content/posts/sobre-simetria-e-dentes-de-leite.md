@@ -32,7 +32,7 @@ Na verdade, só voltei a me animar com a foto quando a vó Perpétua a viu. Expl
 
 Ela me disse: _então a sua foto é única_.
 
-A vó Perpétua sempre teve um jeito especial de falar comigo. Ela sabia me alegrar, consolar e, acima de tudo, como me fazer sentir amado.
+A vó Perpétua sempre teve um jeito especial de falar comigo. Ela sabe me alegrar, consolar e, acima de tudo, como me fazer sentir amado.
 
 A questão é que hoje, mais de 20 anos depois daquela foto, quando eu a vejo, eu só lembro da minha autenticidade e da falta de simetria da minha roupa que rendeu uma foto única.
 
