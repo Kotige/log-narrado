@@ -19,7 +19,7 @@ export default function ReadingControls({
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {focusMode && (
         <div
-          className="flex items-center gap-3 rounded-full border px-4 py-2 shadow-sm"
+          className="flex items-center gap-3 rounded-full border bg-neutral-300/90 px-4 py-2 shadow-sm backdrop-blur-sm"
           style={{ borderColor: "currentColor", opacity: 0.95 }}
         >
           <div className="flex items-center gap-1">
