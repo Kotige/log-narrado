@@ -62,7 +62,7 @@ export default function Post() {
 
         <hr className="border-sand-line my-9" />
 
-        <div className="prose prose-neutral max-w-none prose-headings:font-display prose-headings:font-normal prose-strong:text-moss-dark prose-a:text-moss hover:prose-a:text-moss-dark prose-blockquote:border-terracotta prose-blockquote:not-italic prose-blockquote:text-muted">
+        <div className="prose prose-neutral md:prose-lg max-w-none prose-headings:font-display prose-headings:font-normal prose-p:leading-[1.9] prose-p:mb-7 prose-p:text-justify prose-p:indent-8 prose-strong:text-moss-dark prose-a:text-moss hover:prose-a:text-moss-dark prose-blockquote:border-terracotta prose-blockquote:not-italic prose-blockquote:text-muted">
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {post.content}
           </ReactMarkdown>
