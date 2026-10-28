@@ -37,7 +37,10 @@ export default function ReadingProgressBar({ articleRef, accentColor }) {
     >
       <div
         className="h-full origin-left transition-transform duration-150 ease-out"
-        style={{ transform: `scaleX(${progress})`, backgroundColor: accentColor }}
+        style={{
+          transform: `scaleX(${progress})`,
+          backgroundColor: accentColor,
+        }}
       />
     </div>
   );

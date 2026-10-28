@@ -27,7 +27,10 @@ function asString(value) {
 
 function loadEntries(files, { includeDrafts }) {
   return files
-    .map(([path, raw]) => ({ slug: slugFromPath(path), ...parseFrontmatter(raw) }))
+    .map(([path, raw]) => ({
+      slug: slugFromPath(path),
+      ...parseFrontmatter(raw),
+    }))
     .filter(({ data }) => includeDrafts || data.draft !== true);
 }
 

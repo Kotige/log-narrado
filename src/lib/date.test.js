@@ -17,6 +17,8 @@ describe("formatDate", () => {
 describe("parseDate", () => {
   it("monta a data no fuso local", () => {
     const date = parseDate("2026-01-31");
-    expect([date.getFullYear(), date.getMonth(), date.getDate()]).toEqual([2026, 0, 31]);
+    expect([date.getFullYear(), date.getMonth(), date.getDate()]).toEqual([
+      2026, 0, 31,
+    ]);
   });
 });

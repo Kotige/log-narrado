@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import { buildContos, buildPosts, estimateReadingTime } from "./content";
 
 function file(slug, frontmatter, body = "Texto.") {
-  return [`/src/content/posts/${slug}.md`, `---\n${frontmatter}\n---\n\n${body}`];
+  return [
+    `/src/content/posts/${slug}.md`,
+    `---\n${frontmatter}\n---\n\n${body}`,
+  ];
 }
 
 describe("buildPosts", () => {
@@ -14,7 +17,11 @@ describe("buildPosts", () => {
   ];
 
   it("ordena do mais recente ao mais antigo, desempatando pelo slug", () => {
-    expect(buildPosts(files).map((post) => post.slug)).toEqual(["novo", "a", "b"]);
+    expect(buildPosts(files).map((post) => post.slug)).toEqual([
+      "novo",
+      "a",
+      "b",
+    ]);
   });
 
   it("numera os posts em ordem cronológica", () => {

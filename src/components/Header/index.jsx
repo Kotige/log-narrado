@@ -87,7 +87,10 @@ export default function Header() {
           </button>
 
           {/* Nav — desktop */}
-          <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
+          <nav
+            aria-label="Principal"
+            className="hidden items-center gap-1 md:flex"
+          >
             {NAV_LINKS.map((link) => {
               const isActive = isActiveLink(link, pathname);
               return (
@@ -116,7 +119,9 @@ export default function Header() {
           aria-label="Principal"
           inert={!menuOpen}
           className={`absolute right-0 top-full flex w-full max-w-xs flex-col bg-bg px-8 pb-5 pt-2 text-right shadow-sm transition-[transform,opacity] duration-500 ease-in-out md:hidden ${
-            menuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+            menuOpen
+              ? "translate-x-0 opacity-100"
+              : "translate-x-full opacity-0"
           }`}
         >
           {NAV_LINKS.map((link) => {
@@ -127,7 +132,9 @@ export default function Header() {
                 to={link.href}
                 aria-current={isActive ? "page" : undefined}
                 className={`px-1.5 py-3 text-[14.5px] no-underline ${
-                  isActive ? "font-extrabold text-moss-dark" : "font-medium text-ink"
+                  isActive
+                    ? "font-extrabold text-moss-dark"
+                    : "font-medium text-ink"
                 }`}
               >
                 {link.label}

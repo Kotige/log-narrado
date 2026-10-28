@@ -41,7 +41,10 @@ function absoluteUrl(urlPath) {
 async function readCollection(dir) {
   const files = (await readdir(dir)).filter((file) => file.endsWith(".md"));
   return Promise.all(
-    files.map(async (file) => [file, await readFile(path.join(dir, file), "utf8")]),
+    files.map(async (file) => [
+      file,
+      await readFile(path.join(dir, file), "utf8"),
+    ]),
   );
 }
 
@@ -91,7 +94,11 @@ function articleJsonLd({ title, description, date, path: urlPath }) {
     datePublished: date,
     url: absoluteUrl(urlPath),
     inLanguage: "pt-BR",
-    author: { "@type": "Person", name: AUTHOR.name, url: absoluteUrl("/autor") },
+    author: {
+      "@type": "Person",
+      name: AUTHOR.name,
+      url: absoluteUrl("/autor"),
+    },
     publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
   };
 }
@@ -246,14 +253,17 @@ export default function staticPages() {
 
       const template = await readFile(path.join(outDir, "index.html"), "utf8");
       if (!SEO_BLOCK.test(template)) {
-        throw new Error("index.html precisa do bloco <!-- seo:start --> … <!-- seo:end -->");
+        throw new Error(
+          "index.html precisa do bloco <!-- seo:start --> … <!-- seo:end -->",
+        );
       }
 
       const pages = buildPages(content);
 
       for (const page of pages) {
         const html = template.replace(SEO_BLOCK, renderHead(page));
-        const file = page.path === "/" ? "index.html" : `${page.path.slice(1)}.html`;
+        const file =
+          page.path === "/" ? "index.html" : `${page.path.slice(1)}.html`;
         const target = path.join(outDir, file);
 
         await mkdir(path.dirname(target), { recursive: true });

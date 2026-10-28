@@ -79,7 +79,9 @@ export default function ReadingControls({
         type="button"
         onClick={onToggleFocusMode}
         aria-label={
-          focusMode ? "Sair do modo leitura (Esc)" : "Entrar no modo leitura (L)"
+          focusMode
+            ? "Sair do modo leitura (Esc)"
+            : "Entrar no modo leitura (L)"
         }
         title={focusMode ? "Sair do modo leitura (Esc)" : "Modo leitura (L)"}
         className="flex h-12 w-12 items-center justify-center rounded-full border shadow-sm transition-transform motion-safe:hover:scale-105"

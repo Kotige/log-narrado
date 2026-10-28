@@ -3,7 +3,11 @@ import { formatDate } from "../../lib/date";
 
 // Card de post usado na Home (RecentPosts) e na listagem /posts.
 // `headingLevel` mantém a hierarquia de títulos certa em cada página.
-export default function PostCard({ post, headingLevel = "h2", showExcerpt = false }) {
+export default function PostCard({
+  post,
+  headingLevel = "h2",
+  showExcerpt = false,
+}) {
   const Heading = headingLevel;
 
   return (
