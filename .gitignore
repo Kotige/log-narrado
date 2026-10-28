@@ -40,3 +40,4 @@ src/content/**/*.md
 
 # Vercel CLI
 .vercel
+.env*
