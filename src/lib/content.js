@@ -43,6 +43,8 @@ export function buildPosts(files, { includeDrafts = false } = {}) {
       category: asString(data.category),
       tags: Array.isArray(data.tags) ? data.tags : [],
       excerpt: asString(data.excerpt),
+      // Trecho opcional do próprio texto, exibido no destaque da Home.
+      quote: asString(data.quote),
       draft: data.draft === true,
       content,
       readingTime: estimateReadingTime(content),

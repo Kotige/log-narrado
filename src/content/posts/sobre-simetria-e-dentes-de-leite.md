@@ -4,6 +4,7 @@ date: 2026-09-23
 category: crônicas
 tags: [física, simetria, infância, memória]
 excerpt: Se nem o Universo é simétrico, por que eu precisaria ser?
+quote: Vez ou outra, posso me permitir ser autêntico, deixar uma ou duas cordinhas desalinhadas e sorrir mesmo que banguela.
 ---
 
 Pendurada na parede do meu quarto de infância, na casa da minha mãe, há uma foto da minha primeira formatura. Eu tinha entre 5 e 6 anos e ainda hoje me lembro do dia em que aquela foto foi feita.

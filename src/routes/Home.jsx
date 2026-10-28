@@ -10,12 +10,7 @@ export default function Home() {
 
   return (
     <Layout className="flex flex-col">
-      <section className="flex w-full md:min-h-screen flex-1 items-center flex-col md:flex-row">
-        <div className="w-full md:w-2/3">
-          <Hero />
-        </div>
-        <div className="hidden md:block md:w-1/3"></div>
-      </section>
+      <Hero />
 
       <section className="flex w-full flex-col px-8 py-16 md:flex-row md:gap-12">
         <div className="w-full md:w-2/3 flex flex-col gap-20">
