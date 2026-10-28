@@ -4,6 +4,7 @@ date: 2026-08-10
 category: ciência
 tags: [física, astronomia, inverno]
 excerpt: Uma volta rápida pela geometria por trás dos dias curtos.
+draft: true
 ---
 
 Aqui vai o conteúdo do post em **markdown** normal...

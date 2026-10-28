@@ -22,7 +22,7 @@ Minha mãe, que provavelmente não se lembra desse dia, ficou feliz com a minha 
 
 Os dias passaram (talvez semanas) e as fotos ficaram prontas. Entregaram uma para cada aluno, emoldurada em um quadro de fundo branco e moldura marrom. E lá estava ela, a foto com o sorriso banguela, exatamente como eu queria que ficasse, exceto por um detalhe.
 
-A beca, ao contrário da dos meus amigos, estava desarrumada. Duas cordinhas azuis que atravessavam um tecido branco na altura do peito presas por dois botões também azul, ficaram fora do lugar. As cordinhas deveriam formar semicírculos concêntricos, simétricos e alinhados, mas as minhas estavam bagunçadas.
+A beca, ao contrário da dos meus amigos, estava desarrumada. Duas cordinhas azuis que atravessavam um tecido branco na altura do peito presas por dois botões também azuis, ficaram fora do lugar. As cordinhas deveriam formar semicírculos concêntricos, simétricos e alinhados, mas as minhas estavam bagunçadas.
 
 Aquele detalhe pequeno, aquela assimetria inesperada fez eu perder todo o encanto pela foto. E isso só piorou depois que meus colegas notaram esse defeito. Como eu poderia ter me preocupado tanto em sorrir e esquecido de olhar a roupa? Como a professora poderia se preocupar tanto que meu sorriso banguela fosse o motivo de deixar a foto feia e não a roupa desalinhada?
 
