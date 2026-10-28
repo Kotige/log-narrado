@@ -22,8 +22,8 @@ export default function Hero() {
           </Link>
         </h1>
 
-        <div className="flex flex-col items-center gap-2">
-          <div className="flex flex-wrap items-center justify-center gap-3 font-mono text-[10px] uppercase tracking-[0.06em] text-muted md:text-[13px]">
+        <div className="flex flex-col items-center gap-2 md:items-start">
+          <div className="flex flex-wrap items-center justify-center gap-3 font-mono text-[10px] md:justify-start uppercase tracking-[0.06em] text-muted md:text-[13px]">
             <time dateTime={post.date}>{formatDate(post.date)}</time>
             <span className="text-sand-line" aria-hidden="true">
               ·
