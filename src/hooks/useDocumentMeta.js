@@ -1,6 +1,11 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { AUTHOR, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "../data/site";
+import {
+  DEFAULT_IMAGE,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from "../data/site";
 
 function setMeta(attribute, key, content) {
   let element = document.head.querySelector(`meta[${attribute}="${key}"]`);
@@ -32,7 +37,7 @@ export function absoluteUrl(path) {
 export default function useDocumentMeta({
   title,
   description = SITE_DESCRIPTION,
-  image = AUTHOR.avatar,
+  image = DEFAULT_IMAGE,
   type = "website",
 } = {}) {
   const { pathname } = useLocation();

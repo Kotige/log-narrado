@@ -10,6 +10,9 @@ export const SITE_DESCRIPTION =
   "Ciência, tecnologia e experiências pessoais, registradas com alguma regularidade.";
 export const SITE_LOCALE = "pt_BR";
 
+// Imagem usada nas prévias de links (Open Graph) quando a página não tem capa.
+export const DEFAULT_IMAGE = "/og-default.png";
+
 export const AUTHOR = {
   name: "Vítor",
   avatar: "/profile.jpg",
