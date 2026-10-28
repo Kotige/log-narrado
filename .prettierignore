@@ -1,0 +1,6 @@
+dist
+node_modules
+package-lock.json
+# Textos são escritos à mão; o Prettier não mexe neles.
+src/content
+*.md
