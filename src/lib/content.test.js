@@ -36,6 +36,16 @@ describe("buildPosts", () => {
     expect(buildPosts(files, { includeDrafts: true })[0].slug).toBe("rascunho");
   });
 
+  it("ignora modelos (arquivos que começam com _)", () => {
+    const slugs = buildPosts(
+      [...files, file("_modelo", "title: M\ndate: 2026-12-01")],
+      {
+        includeDrafts: true,
+      },
+    ).map((post) => post.slug);
+    expect(slugs).not.toContain("_modelo");
+  });
+
   it("preenche valores padrão", () => {
     const [post] = buildPosts([file("x", "date: 2026-01-01")]);
     expect(post).toMatchObject({ title: "Sem título", tags: [], excerpt: "" });

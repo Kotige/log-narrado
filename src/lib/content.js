@@ -25,8 +25,14 @@ function asString(value) {
   return typeof value === "string" ? value : "";
 }
 
+// Arquivos que começam com "_" (como os _modelo.md) nunca viram páginas.
+function isTemplate(path) {
+  return slugFromPath(path).startsWith("_");
+}
+
 function loadEntries(files, { includeDrafts }) {
   return files
+    .filter(([path]) => !isTemplate(path))
     .map(([path, raw]) => ({
       slug: slugFromPath(path),
       ...parseFrontmatter(raw),

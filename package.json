@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "deploy": "node build/checkContent.js && npx vercel@65.5.0 build --prod && npx vercel@65.5.0 deploy --prebuilt --prod",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

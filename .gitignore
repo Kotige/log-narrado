@@ -32,3 +32,11 @@ REVISAO.md
 .env
 .env.*
 !.env.example
+
+# Conteúdo: os textos ficam só na máquina do autor; no repositório vão
+# apenas os modelos (_modelo.md) de cada coleção.
+src/content/**/*.md
+!src/content/**/_modelo.md
+
+# Vercel CLI
+.vercel

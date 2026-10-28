@@ -24,11 +24,18 @@ npm run dev       # servidor de desenvolvimento em http://localhost:5173
 | `npm run format`       | Formata o código com Prettier                          |
 | `npm test`             | Testes (Vitest)                                        |
 | `npm run check`        | Lint, formatação, testes e build — o mesmo que o CI    |
+| `npm run deploy`       | Publica na Vercel a partir do seu computador           |
 
 ## Publicando um texto
 
-Crie um arquivo `.md` na pasta da coleção. O nome do arquivo vira o endereço
-da página (`sobre-simetria.md` → `/posts/sobre-simetria`).
+Copie o `_modelo.md` da pasta da coleção com outro nome. O nome do arquivo
+vira o endereço da página (`sobre-simetria.md` → `/posts/sobre-simetria`).
+Arquivos que começam com `_` nunca aparecem no site.
+
+> **Os textos não vão para o GitHub.** O `.gitignore` ignora todos os `.md` de
+> `src/content/`, exceto os modelos. Eles existem só no seu computador, então
+> mantenha um backup próprio (pasta sincronizada, disco externo etc.). Um
+> clone novo do repositório tem apenas os modelos, e o site aparece vazio.
 
 ### Posts — `src/content/posts/`
 
@@ -90,9 +97,28 @@ build/
 
 ## Publicação
 
-O site é publicado na [Vercel](https://vercel.com): importe o repositório e
-use as configurações do `vercel.json` (já inclui as URLs limpas, os cabeçalhos
-de segurança e o cache dos arquivos estáticos).
+O site é publicado na [Vercel](https://vercel.com) **a partir do seu
+computador**, porque os textos não estão no GitHub. O build roda localmente,
+com os `.md`, e só o site pronto é enviado.
+
+Na primeira vez, faça login e vincule a pasta ao projeto da Vercel:
+
+```bash
+npx vercel@65.5.0 login
+npx vercel@65.5.0 link
+```
+
+Depois, para publicar:
+
+```bash
+npm run deploy
+```
+
+O script confere se há posts em `src/content/posts/` (para não publicar um site
+vazio), gera o build de produção e envia para a Vercel. O deploy automático a
+cada push está desligado no `vercel.json` (`git.deploymentEnabled: false`),
+pelo mesmo motivo. O `vercel.json` também define as URLs limpas, os
+cabeçalhos de segurança e o cache dos arquivos estáticos.
 
 No build, cada página ganha seu próprio HTML com título, descrição e Open
 Graph, para que buscadores e prévias de links mostrem as informações certas.
