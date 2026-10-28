@@ -1,14 +1,15 @@
-import Header from "../components/Header";
+import Layout from "../components/Layout";
 import Hero from "../components/Hero";
 import RecentPosts from "../components/RecentPosts";
 import ProjectsCategories from "../components/ProjectsCategories";
 import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
+import useDocumentMeta from "../hooks/useDocumentMeta";
 
 export default function Home() {
+  useDocumentMeta();
+
   return (
-    <div className="flex flex-col">
-      <Header />
+    <Layout className="flex flex-col">
       <section className="flex w-full md:min-h-screen flex-1 items-center flex-col md:flex-row">
         <div className="w-full md:w-2/3">
           <Hero />
@@ -25,7 +26,6 @@ export default function Home() {
           <Sidebar />
         </div>
       </section>
-      <Footer />
-    </div>
+    </Layout>
   );
 }

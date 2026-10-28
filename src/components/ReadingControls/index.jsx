@@ -1,10 +1,11 @@
 import { FaBookOpen, FaCompress } from "react-icons/fa";
+import { FONT_SIZE, READING_THEMES } from "../../lib/readingThemes";
 
-const THEMES = [
-  { id: "light", label: "Claro", swatch: "#fbfaf6" },
-  { id: "sepia", label: "Sépia", swatch: "#f4ecd8" },
-  { id: "dark", label: "Escuro", swatch: "#1f1e1c" },
-];
+const THEMES = Object.entries(READING_THEMES).map(([id, theme]) => ({
+  id,
+  label: theme.label,
+  swatch: theme.bg,
+}));
 
 export default function ReadingControls({
   focusMode,
@@ -15,6 +16,9 @@ export default function ReadingControls({
   onThemeChange,
   accentColor,
 }) {
+  const canDecrease = fontSize > FONT_SIZE.min;
+  const canIncrease = fontSize < FONT_SIZE.max;
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {focusMode && (
@@ -26,8 +30,9 @@ export default function ReadingControls({
             <button
               type="button"
               aria-label="Diminuir fonte"
-              onClick={() => onFontSizeChange(Math.max(16, fontSize - 2))}
-              className="flex h-7 w-7 items-center justify-center rounded-full border text-xs font-medium"
+              disabled={!canDecrease}
+              onClick={() => onFontSizeChange(fontSize - FONT_SIZE.step)}
+              className="flex h-7 w-7 items-center justify-center rounded-full border text-xs font-medium disabled:opacity-40"
               style={{ borderColor: "currentColor" }}
             >
               A-
@@ -35,8 +40,9 @@ export default function ReadingControls({
             <button
               type="button"
               aria-label="Aumentar fonte"
-              onClick={() => onFontSizeChange(Math.min(26, fontSize + 2))}
-              className="flex h-7 w-7 items-center justify-center rounded-full border text-sm font-medium"
+              disabled={!canIncrease}
+              onClick={() => onFontSizeChange(fontSize + FONT_SIZE.step)}
+              className="flex h-7 w-7 items-center justify-center rounded-full border text-sm font-medium disabled:opacity-40"
               style={{ borderColor: "currentColor" }}
             >
               A+
@@ -44,6 +50,8 @@ export default function ReadingControls({
           </div>
 
           <div
+            role="group"
+            aria-label="Tema de leitura"
             className="flex items-center gap-1.5 border-l pl-3"
             style={{ borderColor: "currentColor" }}
           >
@@ -52,6 +60,8 @@ export default function ReadingControls({
                 key={t.id}
                 type="button"
                 aria-label={`Tema ${t.label}`}
+                aria-pressed={theme === t.id}
+                title={`Tema ${t.label}`}
                 onClick={() => onThemeChange(t.id)}
                 className="h-5 w-5 rounded-full border-2 transition-transform"
                 style={{
@@ -69,15 +79,16 @@ export default function ReadingControls({
         type="button"
         onClick={onToggleFocusMode}
         aria-label={
-          focusMode ? "Sair do modo leitura" : "Entrar no modo leitura"
+          focusMode ? "Sair do modo leitura (Esc)" : "Entrar no modo leitura (L)"
         }
-        className="flex h-12 w-12 items-center justify-center rounded-full border shadow-sm transition-transform hover:scale-105"
+        title={focusMode ? "Sair do modo leitura (Esc)" : "Modo leitura (L)"}
+        className="flex h-12 w-12 items-center justify-center rounded-full border shadow-sm transition-transform motion-safe:hover:scale-105"
         style={{ borderColor: "currentColor", backgroundColor: accentColor }}
       >
         {focusMode ? (
-          <FaCompress size={16} className="text-bg" />
+          <FaCompress size={16} className="text-bg" aria-hidden="true" />
         ) : (
-          <FaBookOpen size={18} className="text-bg" />
+          <FaBookOpen size={18} className="text-bg" aria-hidden="true" />
         )}
       </button>
     </div>

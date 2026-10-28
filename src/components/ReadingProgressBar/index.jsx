@@ -1,41 +1,43 @@
 import { useEffect, useState } from "react";
-
-// Mede o progresso de rolagem dentro do elemento referenciado por articleRef,
-// não da página inteira — assim a barra chega a 100% quando o conto termina,
-// não quando a página (que pode ter espaço extra) termina.
+import { getReadingProgress } from "../../lib/readingProgress";
 
 export default function ReadingProgressBar({ articleRef, accentColor }) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let frame = null;
+
+    // Um cálculo por quadro, no máximo, mesmo com muitos eventos de rolagem.
     function handleScroll() {
-      const el = articleRef.current;
-      if (!el) return;
-
-      const rect = el.getBoundingClientRect();
-      const articleHeight = rect.height - window.innerHeight;
-
-      if (articleHeight <= 0) {
-        setProgress(100);
-        return;
-      }
-
-      const scrolled = -rect.top;
-      const pct = Math.min(100, Math.max(0, (scrolled / articleHeight) * 100));
-      setProgress(pct);
+      if (frame !== null) return;
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        if (articleRef.current) {
+          setProgress(getReadingProgress(articleRef.current));
+        }
+      });
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
   }, [articleRef]);
 
+  // Decorativa: o leitor de tela já sabe onde está no texto.
   return (
-    <div className="fixed left-0 top-0 z-50 h-0.75 w-full bg-transparent">
+    <div
+      aria-hidden="true"
+      className="fixed left-0 top-0 z-50 h-0.75 w-full bg-transparent"
+    >
       <div
-        className="h-full transition-[width] duration-150 ease-out"
-        style={{ width: `${progress}%`, backgroundColor: accentColor }}
+        className="h-full origin-left transition-transform duration-150 ease-out"
+        style={{ transform: `scaleX(${progress})`, backgroundColor: accentColor }}
       />
     </div>
   );

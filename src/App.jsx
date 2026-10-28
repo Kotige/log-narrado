@@ -1,28 +1,38 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop";
 import Home from "./routes/Home";
-import Post from "./routes/Post";
-import Projects from "./routes/Projects";
-import ProjectCategory from "./routes/ProjectCategory";
-import Autor from "./routes/Autor";
-import Changelog from "./routes/Changelog";
-import Posts from "./routes/Posts";
-import Conto from "./routes/Conto";
-import FabularioIndex from "./routes/FabularioIndex";
+
+// A Home vem no pacote principal; as outras páginas são baixadas só quando
+// visitadas. Assim, quem chega pela Home não baixa o react-markdown.
+const Post = lazy(() => import("./routes/Post"));
+const Posts = lazy(() => import("./routes/Posts"));
+const Projects = lazy(() => import("./routes/Projects"));
+const ProjectCategory = lazy(() => import("./routes/ProjectCategory"));
+const FabularioIndex = lazy(() => import("./routes/FabularioIndex"));
+const Conto = lazy(() => import("./routes/Conto"));
+const Changelog = lazy(() => import("./routes/Changelog"));
+const Autor = lazy(() => import("./routes/Autor"));
+const NotFound = lazy(() => import("./routes/NotFound"));
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/posts/:slug" element={<Post />} />
-        <Route path="/fabulario/:slug" element={<Conto />} />
-        <Route path="/projetos" element={<Projects />} />
-        <Route path="/posts" element={<Posts />} />
-        <Route path="/changelog" element={<Changelog />} />
-        <Route path="/projetos/fabulario" element={<FabularioIndex />} />
-        <Route path="/projetos/:slug" element={<ProjectCategory />} />
-        <Route path="/autor" element={<Autor />} />
-      </Routes>
+      <ScrollToTop />
+      <Suspense fallback={<div className="min-h-screen bg-bg" />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/posts" element={<Posts />} />
+          <Route path="/posts/:slug" element={<Post />} />
+          <Route path="/fabulario/:slug" element={<Conto />} />
+          <Route path="/projetos" element={<Projects />} />
+          <Route path="/projetos/fabulario" element={<FabularioIndex />} />
+          <Route path="/projetos/:slug" element={<ProjectCategory />} />
+          <Route path="/changelog" element={<Changelog />} />
+          <Route path="/autor" element={<Autor />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 }

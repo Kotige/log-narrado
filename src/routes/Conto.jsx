@@ -6,163 +6,131 @@ import Footer from "../components/Footer";
 import GenreBadge from "../components/GenreBadge";
 import ReadingProgressBar from "../components/ReadingProgressBar";
 import ReadingControls from "../components/ReadingControls";
-import { getContoBySlug, getRelatedContos } from "../utils/getFabulario";
+import { getContoBySlug, getRelatedContos } from "../lib/contos";
+import { formatDate } from "../lib/date";
+import { ACCENT_COLOR } from "../lib/readingThemes";
+import {
+  getReadingProgress,
+  getScrollTopForProgress,
+} from "../lib/readingProgress";
+import useReadingPreferences from "../hooks/useReadingPreferences";
+import useFocusMode from "../hooks/useFocusMode";
+import useDocumentMeta from "../hooks/useDocumentMeta";
+import NotFound from "./NotFound";
 
-const ACCENT_COLOR = "#c76b3f";
-
-const READING_THEMES = {
-  light: { bg: "#fbfaf6", text: "#2b2a28" },
-  sepia: { bg: "#f4ecd8", text: "#5b4636" },
-  dark: { bg: "#1f1e1c", text: "#e8e6df" },
-};
-
-const PREFS_KEY = "fabulario:prefs";
-
-function formatDate(dateStr) {
-  if (!dateStr) return "";
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
+// O progresso é salvo como fração do conto (0 a 1), não em pixels: assim a
+// posição continua certa mesmo se o tamanho da fonte ou da tela mudar.
+const MIN_PROGRESS_TO_RESUME = 0.05;
+const FINISHED_PROGRESS = 0.97;
+const SAVE_INTERVAL_MS = 500;
 
 function progressKey(slug) {
-  return `fabulario:progress:${slug}`;
+  return `fabulario:progresso:${slug}`;
+}
+
+function loadSavedProgress(slug) {
+  try {
+    const saved = Number(localStorage.getItem(progressKey(slug)));
+    if (saved >= MIN_PROGRESS_TO_RESUME && saved < FINISHED_PROGRESS) {
+      return saved;
+    }
+  } catch {
+    // localStorage indisponível (modo privado, etc.)
+  }
+  return null;
 }
 
 export default function Conto() {
   const { slug } = useParams();
   const conto = getContoBySlug(slug);
-  const related = getRelatedContos(conto);
 
+  if (!conto) {
+    return (
+      <NotFound
+        title="Conto não encontrado"
+        message="Esse conto não existe ou mudou de endereço."
+        backTo="/projetos/fabulario"
+        backLabel="← Voltar pro Fabulário"
+      />
+    );
+  }
+
+  // `key` faz o estado (banner, progresso) recomeçar ao ir de um conto para
+  // outro pelo "Mais como esse" — a rota é a mesma, então sem isso o
+  // componente seria reaproveitado.
+  return <ContoContent key={conto.slug} conto={conto} />;
+}
+
+function ContoContent({ conto }) {
+  const related = getRelatedContos(conto);
   const articleRef = useRef(null);
 
-  const [focusMode, setFocusMode] = useState(false);
-
-  const [fontSize, setFontSize] = useState(() => {
-    try {
-      const raw = localStorage.getItem(PREFS_KEY);
-      if (raw) {
-        const prefs = JSON.parse(raw);
-        if (prefs.fontSize) return prefs.fontSize;
-      }
-    } catch {
-      // localStorage indisponível (modo privado, etc.) — segue com o padrão.
-    }
-    return 18;
-  });
-
-  const [theme, setTheme] = useState(() => {
-    try {
-      const raw = localStorage.getItem(PREFS_KEY);
-      if (raw) {
-        const prefs = JSON.parse(raw);
-        if (prefs.theme) return prefs.theme;
-      }
-    } catch {
-      // ignora
-    }
-    return "light";
-  });
+  const [focusMode, setFocusMode] = useFocusMode();
+  const { fontSize, setFontSize, theme, setTheme, readingTheme } =
+    useReadingPreferences();
 
   // Progresso salvo e visibilidade do banner calculados juntos, uma única
   // vez, na primeira renderização — nada de useEffect + setState aqui.
   const [resumeState, setResumeState] = useState(() => {
-    if (!conto) return { savedProgress: null, showResumeBanner: false };
-
-    try {
-      const raw = localStorage.getItem(progressKey(conto.slug));
-      if (raw) {
-        const saved = Number(raw);
-        if (saved > 200) {
-          return { savedProgress: saved, showResumeBanner: true };
-        }
-      }
-    } catch {
-      // ignora
-    }
-
-    return { savedProgress: null, showResumeBanner: false };
+    const savedProgress = loadSavedProgress(conto.slug);
+    return { savedProgress, showResumeBanner: savedProgress !== null };
   });
   const { savedProgress, showResumeBanner } = resumeState;
 
-  // Salva preferências sempre que mudam.
+  useDocumentMeta({
+    title: conto.title,
+    description: conto.excerpt || undefined,
+    image: conto.cover || undefined,
+    type: "article",
+  });
+
+  // Salva o progresso enquanto o leitor avança — no máximo a cada
+  // SAVE_INTERVAL_MS, e mais uma vez ao sair da página. Ao chegar ao fim,
+  // apaga o registro para o banner não aparecer para sempre.
   useEffect(() => {
-    try {
-      localStorage.setItem(PREFS_KEY, JSON.stringify({ fontSize, theme }));
-    } catch {
-      // ignora se não conseguir salvar
+    let timeout = null;
+
+    function saveProgress() {
+      timeout = null;
+      const element = articleRef.current;
+      if (!element) return;
+
+      const progress = getReadingProgress(element);
+      try {
+        if (progress >= FINISHED_PROGRESS) {
+          localStorage.removeItem(progressKey(conto.slug));
+        } else if (progress >= MIN_PROGRESS_TO_RESUME) {
+          localStorage.setItem(progressKey(conto.slug), progress.toFixed(4));
+        }
+      } catch {
+        // ignora
+      }
     }
-  }, [fontSize, theme]);
-
-  // Salva a posição de rolagem periodicamente enquanto o leitor avança.
-  useEffect(() => {
-    if (!conto) return;
-
-    let ticking = false;
 
     function handleScroll() {
-      if (ticking) return;
-      ticking = true;
-
-      requestAnimationFrame(() => {
-        try {
-          localStorage.setItem(progressKey(conto.slug), String(window.scrollY));
-        } catch {
-          // ignora
-        }
-        ticking = false;
-      });
+      if (timeout === null) {
+        timeout = setTimeout(saveProgress, SAVE_INTERVAL_MS);
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [conto]);
+    window.addEventListener("pagehide", saveProgress);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("pagehide", saveProgress);
+      if (timeout !== null) clearTimeout(timeout);
+    };
+  }, [conto.slug]);
 
-  // Atalhos de teclado: L alterna o modo leitura, Esc sempre sai dele.
-  useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.key === "Escape" && focusMode) {
-        setFocusMode(false);
-      }
-      if (
-        (event.key === "l" || event.key === "L") &&
-        !event.metaKey &&
-        !event.ctrlKey
-      ) {
-        setFocusMode((current) => !current);
-      }
+  function resumeReading() {
+    if (articleRef.current) {
+      window.scrollTo({
+        top: getScrollTopForProgress(articleRef.current, savedProgress),
+        behavior: "smooth",
+      });
     }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [focusMode]);
-
-  if (!conto) {
-    return (
-      <div className="flex min-h-screen flex-col">
-        <Header activeHref="/projetos" />
-        <main className="flex flex-1 flex-col items-center justify-center gap-4 px-8 py-20 text-center">
-          <h1 className="font-display text-3xl text-ink">
-            Conto não encontrado
-          </h1>
-          <Link
-            to="/projetos/fabulario"
-            className="font-mono text-[12px] uppercase tracking-[0.06em] text-moss-dark no-underline hover:text-moss"
-          >
-            ← Voltar pro Fabulário
-          </Link>
-        </main>
-        <Footer />
-      </div>
-    );
+    setResumeState((s) => ({ ...s, showResumeBanner: false }));
   }
-
-  const readingTheme = READING_THEMES[theme];
 
   return (
     <div
@@ -171,9 +139,10 @@ export default function Conto() {
     >
       <ReadingProgressBar articleRef={articleRef} accentColor={ACCENT_COLOR} />
 
-      {!focusMode && <Header activeHref="/projetos" />}
+      {!focusMode && <Header />}
 
       <main
+        id="conteudo"
         ref={articleRef}
         className="mx-auto flex w-full max-w-170 flex-col gap-8 px-8 py-20"
         style={{ fontSize: `${fontSize}px` }}
@@ -191,9 +160,12 @@ export default function Conto() {
 
           <div className="flex flex-wrap items-center gap-3">
             <GenreBadge genre={conto.genre} />
-            <span className="font-mono text-[11px] uppercase tracking-[0.06em] opacity-70">
+            <time
+              dateTime={conto.date}
+              className="font-mono text-[11px] uppercase tracking-[0.06em] opacity-70"
+            >
               {formatDate(conto.date)}
-            </span>
+            </time>
             <span className="font-mono text-[11px] uppercase tracking-[0.06em] opacity-70">
               ~{conto.readingTime} min de leitura
             </span>
@@ -232,14 +204,13 @@ export default function Conto() {
             className="flex flex-wrap items-center justify-between gap-3 border px-4 py-3 text-sm"
             style={{ borderColor: readingTheme.text, opacity: 0.9 }}
           >
-            <span>Você já começou este conto.</span>
+            <span>
+              Você já leu {Math.round(savedProgress * 100)}% deste conto.
+            </span>
             <div className="flex items-center gap-4">
               <button
                 type="button"
-                onClick={() => {
-                  window.scrollTo({ top: savedProgress, behavior: "smooth" });
-                  setResumeState((s) => ({ ...s, showResumeBanner: false }));
-                }}
+                onClick={resumeReading}
                 className="font-mono text-[11px] uppercase tracking-[0.06em] underline"
               >
                 Continuar de onde parei
@@ -283,8 +254,6 @@ export default function Conto() {
                   {...props}
                 />
               ),
-              em: (props) => <em {...props} />,
-              strong: (props) => <strong {...props} />,
             }}
           >
             {conto.content}

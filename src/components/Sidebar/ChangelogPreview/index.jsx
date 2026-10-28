@@ -1,40 +1,35 @@
 import { Link } from "react-router-dom";
 import ChangelogTypeBadge from "../../ChangelogTypeBadge";
-import { getLatestChangelogEntry } from "../../../utils/getChangelog";
-
-function formatDate(dateStr) {
-  if (!dateStr) return "";
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-
-  return date.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
+import { getLatestChangelogEntry } from "../../../lib/changelog";
+import { formatDate } from "../../../lib/date";
 
 export default function ChangelogPreview() {
   const entry = getLatestChangelogEntry();
 
   return (
     <div className="flex flex-col gap-3 border-t border-sand-line pt-5">
-      <h4 className="font-mono text-[12px] uppercase tracking-[0.08em] text-muted">
+      <h2 className="font-mono text-[12px] uppercase tracking-[0.08em] text-muted">
         Changelog
-      </h4>
+      </h2>
 
       {entry ? (
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[11px] uppercase tracking-[0.04em] text-muted">
+            <time
+              dateTime={entry.date}
+              className="font-mono text-[11px] uppercase tracking-[0.04em] text-muted"
+            >
               {formatDate(entry.date)}
-            </span>
+            </time>
             <ChangelogTypeBadge type={entry.type} />
           </div>
 
           <p className="text-sm leading-relaxed text-ink">{entry.title}</p>
 
-          <Link to="/changelog" className="text-sm leading-relaxed text-ink">
+          <Link
+            to="/changelog"
+            className="text-sm leading-relaxed text-ink transition-colors duration-150 hover:text-moss-dark"
+          >
             Veja o histórico completo →
           </Link>
         </div>

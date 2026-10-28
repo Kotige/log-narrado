@@ -1,6 +1,6 @@
 const TYPE_STYLES = {
   novo: "border-moss text-moss-dark",
-  corrigido: "border-terracotta text-terracotta",
+  corrigido: "border-terracota text-terracota",
   alterado: "border-sand-line text-muted",
 };
 
