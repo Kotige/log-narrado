@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { getLatestPost } from "../../lib/posts";
 import { formatDate } from "../../lib/date";
 
-// Destaque da Home: o post mais recente ocupa os dois terços da esquerda e a
-// "ficha da entrada" (número, data, tempo de leitura e tags) preenche o terço
-// da direita, alinhada à sidebar. No desktop, ocupa a altura da tela abaixo
-// do Header (5rem) com o conteúdo centralizado na vertical.
+// Destaque da Home: o título do post mais recente fica sozinho no topo e,
+// logo abaixo, o resumo divide a linha com a "ficha da entrada" (número,
+// data, tempo de leitura e tags), que ocupa o terço da direita, alinhada à
+// sidebar. No desktop, ocupa a altura da tela abaixo do Header (5rem) com o
+// conteúdo centralizado na vertical.
 
 function formatEntryNumber(number) {
   return String(number).padStart(2, "0");
@@ -25,9 +26,9 @@ export default function Hero() {
   return (
     <section
       aria-labelledby="destaque-titulo"
-      className="grid w-full grid-cols-1 content-center items-center gap-12 px-8 pt-16 pb-8 md:min-h-[calc(100svh-5rem)] md:grid-cols-[2fr_1fr] md:py-16"
+      className="grid w-full grid-cols-1 content-center gap-x-12 gap-y-6 px-8 pt-16 pb-8 md:min-h-[calc(100svh-5rem)] md:grid-cols-[2fr_1fr] md:py-16"
     >
-      {/* Texto em destaque */}
+      {/* Título em destaque */}
       <div className="flex flex-col items-center gap-6 text-center md:items-start md:text-left">
         <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-terracota">
           Destaque
@@ -44,7 +45,10 @@ export default function Hero() {
             {post.title}
           </Link>
         </h1>
+      </div>
 
+      {/* Resumo, trecho e chamada */}
+      <div className="flex flex-col items-center gap-6 text-center md:col-start-1 md:items-start md:text-left">
         <p className="max-w-[65ch] text-[17px] leading-relaxed text-muted">
           {post.excerpt}
         </p>
@@ -63,22 +67,22 @@ export default function Hero() {
         </Link>
       </div>
 
-      {/* Ficha da entrada */}
+      {/* Ficha da entrada: começa na mesma altura do resumo */}
       <aside
         aria-label="Sobre este texto"
-        className="flex flex-col gap-6 border-t border-sand-line pt-5"
+        className="mt-6 flex flex-col gap-4 self-start border-t border-sand-line pt-4 md:col-start-2 md:row-start-2 md:mt-0"
       >
-        <div className="flex items-baseline justify-between gap-4 md:flex-col md:items-start md:gap-1">
-          <span className="font-mono text-[12px] uppercase tracking-[0.08em] text-muted">
+        <div className="flex items-baseline gap-3">
+          <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
             Entrada
           </span>
-          <span className="font-display text-6xl leading-none text-terracota md:text-8xl">
+          <span className="font-display text-3xl leading-none text-terracota">
             <span className="sr-only">número </span>
             {formatEntryNumber(post.entryNumber)}
           </span>
         </div>
 
-        <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 font-mono text-[12px] uppercase tracking-[0.06em]">
+        <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 font-mono text-[11px] uppercase tracking-[0.06em]">
           <dt className="text-muted">Publicado</dt>
           <dd className="text-ink">
             <time dateTime={post.date}>{formatDate(post.date)}</time>
@@ -92,11 +96,11 @@ export default function Hero() {
         </dl>
 
         {post.tags.length > 0 && (
-          <ul aria-label="Tags" className="flex flex-wrap gap-2">
+          <ul aria-label="Tags" className="flex flex-wrap gap-1.5">
             {post.tags.map((tag) => (
               <li
                 key={tag}
-                className="rounded-full border border-sand-line px-3 py-1 font-mono text-[11px] uppercase tracking-[0.04em] text-muted"
+                className="rounded-full border border-sand-line px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.04em] text-muted"
               >
                 {tag}
               </li>
