@@ -52,6 +52,7 @@ Texto do post em Markdown…
 | `category` | sim         | Categoria, em minúsculas (`crônicas`, `ciência`…)                 |
 | `tags`     | não         | Lista em uma linha: `[tag1, tag2]`                                |
 | `excerpt`  | sim         | Resumo curto — aparece nas listagens, no RSS e nas prévias de link |
+| `quote`    | não         | Trecho do texto exibido em destaque na Home quando o post é o mais recente |
 | `draft`    | não         | `true` esconde o texto do site publicado (continua visível no dev) |
 
 ### Contos do Fabulário — `src/content/fabulario/`
