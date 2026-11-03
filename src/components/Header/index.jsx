@@ -118,7 +118,7 @@ export default function Header() {
           ref={mobileNavRef}
           aria-label="Principal"
           inert={!menuOpen}
-          className={`absolute right-0 top-full flex w-full max-w-xs flex-col bg-bg px-8 pb-5 pt-2 text-right shadow-sm transition-[transform,opacity] duration-500 ease-in-out md:hidden ${
+          className={`absolute right-0 top-full flex w-full flex-col bg-bg px-8 pb-5 pt-2 text-right shadow-sm transition-[transform,opacity] duration-500 ease-in-out md:hidden ${
             menuOpen
               ? "translate-x-0 opacity-100"
               : "translate-x-full opacity-0"
