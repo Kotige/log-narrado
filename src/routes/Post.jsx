@@ -4,7 +4,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getPostBySlug, getAdjacentPosts } from "../lib/posts";
 import { formatDate } from "../lib/date";
-import { ACCENT_COLOR } from "../lib/readingThemes";
 import useReadingPreferences from "../hooks/useReadingPreferences";
 import useFocusMode from "../hooks/useFocusMode";
 import useDocumentMeta from "../hooks/useDocumentMeta";
@@ -55,7 +54,10 @@ function PostContent({ post }) {
       className="flex min-h-screen flex-col transition-colors duration-200"
       style={{ backgroundColor: readingTheme.bg, color: readingTheme.text }}
     >
-      <ReadingProgressBar articleRef={articleRef} accentColor={ACCENT_COLOR} />
+      <ReadingProgressBar
+        articleRef={articleRef}
+        accentColor={readingTheme.accent}
+      />
 
       {!focusMode && <Header />}
 
@@ -73,7 +75,10 @@ function PostContent({ post }) {
           </Link>
 
           <div className="flex flex-wrap items-center gap-2 mt-10 font-mono text-sm opacity-80">
-            <span style={{ color: ACCENT_COLOR }} className="font-medium">
+            <span
+              style={{ color: readingTheme.accent }}
+              className="font-medium"
+            >
               {formatEntryNumber(post.entryNumber)}
             </span>
             <span className="opacity-50" aria-hidden="true">
@@ -114,12 +119,13 @@ function PostContent({ post }) {
           />
 
           <div
-            className="prose prose-neutral md:prose-lg max-w-none prose-headings:font-display prose-headings:font-normal prose-p:leading-[1.9] prose-p:mb-7 prose-p:text-justify prose-p:hyphens-auto prose-p:indent-8 prose-a:text-moss hover:prose-a:text-moss-dark prose-blockquote:border-terracota prose-blockquote:not-italic"
+            className="prose prose-neutral md:prose-lg max-w-none prose-headings:font-display prose-headings:font-normal prose-p:leading-[1.9] prose-p:mb-7 prose-p:text-justify prose-p:hyphens-auto prose-p:indent-8 prose-a:text-(--reading-link) hover:prose-a:opacity-80 prose-blockquote:border-terracota prose-blockquote:not-italic"
             style={{
               "--tw-prose-body": readingTheme.text,
               "--tw-prose-headings": readingTheme.text,
               "--tw-prose-bold": readingTheme.strong,
               "--tw-prose-quotes": readingTheme.text,
+              "--reading-link": readingTheme.link,
             }}
           >
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -154,7 +160,7 @@ function PostContent({ post }) {
                   style={{ border: `1px solid ${readingTheme.text}33` }}
                 >
                   <span
-                    style={{ color: ACCENT_COLOR }}
+                    style={{ color: readingTheme.accent }}
                     className="font-mono text-[11px] uppercase tracking-wide"
                   >
                     ← post anterior
@@ -177,7 +183,7 @@ function PostContent({ post }) {
                   style={{ border: `1px solid ${readingTheme.text}33` }}
                 >
                   <span
-                    style={{ color: ACCENT_COLOR }}
+                    style={{ color: readingTheme.accent }}
                     className="font-mono text-[11px] uppercase tracking-wide"
                   >
                     próximo post →
@@ -206,7 +212,7 @@ function PostContent({ post }) {
         onFontSizeChange={setFontSize}
         theme={theme}
         onThemeChange={setTheme}
-        accentColor={ACCENT_COLOR}
+        accentColor={readingTheme.accent}
       />
     </div>
   );

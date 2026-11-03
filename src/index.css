@@ -2,14 +2,14 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-bg: #fbfaf6;
-  --color-ink: #2b2a28;
-  --color-moss: #5b7a5e;
-  --color-moss-dark: #435c46;
-  --color-terracota: #c76b3f;
-  --color-sand: #e3ddd0;
-  --color-sand-line: #d8d0bd;
-  --color-muted: #6b6a63;
+  --color-bg: #f8f7fa;
+  --color-ink: #26252b;
+  --color-moss: #58628a;
+  --color-moss-dark: #414a6c;
+  --color-terracota: #6f8a6b;
+  --color-sand: #e5e3ec;
+  --color-sand-line: #d4d1de;
+  --color-muted: #63616b;
 
   --font-display: "Instrument Serif", serif;
   --font-sans: "Manrope Variable", Manrope, sans-serif;

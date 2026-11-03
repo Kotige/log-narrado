@@ -8,7 +8,6 @@ import ReadingProgressBar from "../components/ReadingProgressBar";
 import ReadingControls from "../components/ReadingControls";
 import { getContoBySlug, getRelatedContos } from "../lib/contos";
 import { formatDate } from "../lib/date";
-import { ACCENT_COLOR } from "../lib/readingThemes";
 import {
   getReadingProgress,
   getScrollTopForProgress,
@@ -137,7 +136,10 @@ function ContoContent({ conto }) {
       className="flex min-h-screen flex-col transition-colors duration-200"
       style={{ backgroundColor: readingTheme.bg, color: readingTheme.text }}
     >
-      <ReadingProgressBar articleRef={articleRef} accentColor={ACCENT_COLOR} />
+      <ReadingProgressBar
+        articleRef={articleRef}
+        accentColor={readingTheme.accent}
+      />
 
       {!focusMode && <Header />}
 
@@ -188,7 +190,7 @@ function ContoContent({ conto }) {
           {conto.contentWarning && (
             <div
               className="border-l-2 px-4 py-2 text-sm leading-relaxed opacity-90"
-              style={{ borderColor: ACCENT_COLOR }}
+              style={{ borderColor: readingTheme.accent }}
             >
               <strong className="font-mono text-[11px] uppercase tracking-[0.06em]">
                 Aviso de conteúdo:
@@ -255,7 +257,7 @@ function ContoContent({ conto }) {
               blockquote: (props) => (
                 <blockquote
                   className="border-l-2 pl-4 italic opacity-85"
-                  style={{ borderColor: ACCENT_COLOR }}
+                  style={{ borderColor: readingTheme.accent }}
                   {...props}
                 />
               ),
@@ -300,7 +302,7 @@ function ContoContent({ conto }) {
         onFontSizeChange={setFontSize}
         theme={theme}
         onThemeChange={setTheme}
-        accentColor={ACCENT_COLOR}
+        accentColor={readingTheme.accent}
       />
     </div>
   );
