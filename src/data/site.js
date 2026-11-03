@@ -5,7 +5,7 @@
 // Open Graph, sitemap e RSS — ajuste se o domínio mudar.
 export const SITE_URL = "https://lognarrado.vercel.app";
 
-export const SITE_NAME = "Log Narrado";
+export const SITE_NAME = "log narrado";
 export const SITE_DESCRIPTION =
   "Ciência, tecnologia e experiências pessoais, registradas com alguma regularidade.";
 export const SITE_LOCALE = "pt_BR";
