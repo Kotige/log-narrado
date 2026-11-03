@@ -232,7 +232,12 @@ function ContoContent({ conto }) {
         <div className="flex flex-col gap-5" style={{ lineHeight: 1.8 }}>
           <ReactMarkdown
             components={{
-              p: (props) => <p className="leading-relaxed" {...props} />,
+              p: (props) => (
+                <p
+                  className="leading-relaxed text-justify hyphens-auto"
+                  {...props}
+                />
+              ),
               h2: (props) => (
                 <h2
                   className="font-display pt-4"

@@ -44,7 +44,7 @@ export default function Changelog() {
 
               <h2 className="font-display text-xl text-ink">{entry.title}</h2>
 
-              <p className="text-sm leading-relaxed text-muted">
+              <p className="text-justify text-sm leading-relaxed text-muted hyphens-auto">
                 {entry.description}
               </p>
             </li>
