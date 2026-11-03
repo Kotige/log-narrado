@@ -27,6 +27,7 @@ dist-ssr
 #Files
 guia-commits-semanticos.md
 REVISAO.md
+paletas.html
 
 # Env
 .env
