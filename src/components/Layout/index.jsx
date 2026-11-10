@@ -6,7 +6,7 @@ import Footer from "../Footer";
 // escondem Header e Footer no modo leitura e aplicam o tema escolhido.
 export default function Layout({ children, className = "" }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-dvh flex-col">
       <Header />
       <main id="conteudo" className={className}>
         {children}

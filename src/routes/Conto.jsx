@@ -133,7 +133,7 @@ function ContoContent({ conto }) {
 
   return (
     <div
-      className="flex min-h-screen flex-col transition-colors duration-200"
+      className="flex min-h-dvh flex-col transition-colors duration-200"
       style={{ backgroundColor: readingTheme.bg, color: readingTheme.text }}
     >
       <ReadingProgressBar
