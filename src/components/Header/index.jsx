@@ -32,22 +32,62 @@ export default function Header() {
     setMenuOpen(false);
   }
 
-  // Com o menu aberto: foco no primeiro link e Esc fecha, devolvendo o foco
-  // para o botão.
+  // Tocar num link da página em que o leitor já está não muda a rota, então
+  // o menu precisa ser fechado aqui também.
+  const closeMenu = () => setMenuOpen(false);
+
+  // Com o menu aberto: foco no primeiro link, Tab fica preso entre o botão e
+  // os links, Esc fecha (devolvendo o foco ao botão) e a página atrás não rola.
   useEffect(() => {
     if (!menuOpen) return;
 
-    mobileNavRef.current?.querySelector("a")?.focus();
+    // `preventScroll`: o menu ainda está entrando pela direita; sem isso o
+    // Safari do iOS rola a página atrás do link e o menu some de vista.
+    mobileNavRef.current?.querySelector("a")?.focus({ preventScroll: true });
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
         setMenuOpen(false);
         toggleRef.current?.focus();
+        return;
       }
+
+      if (event.key === "Tab") {
+        const focusables = [
+          toggleRef.current,
+          ...mobileNavRef.current.querySelectorAll("a"),
+        ];
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const current = document.activeElement;
+
+        if (!focusables.includes(current)) {
+          event.preventDefault();
+          first.focus();
+        } else if (event.shiftKey && current === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && current === last) {
+          event.preventDefault();
+          first.focus();
+        }
+        return;
+      }
+
+      // Outros atalhos da página (como o L do modo leitura) ficam desligados
+      // enquanto o menu está aberto. A escuta em captura roda antes deles.
+      event.stopPropagation();
     }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
+
+    window.addEventListener("keydown", handleKeyDown, true);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown, true);
+      root.style.overflow = previousOverflow;
+    };
   }, [menuOpen]);
 
   return (
@@ -59,11 +99,12 @@ export default function Header() {
         Pular para o conteúdo
       </a>
 
-      <header className="sticky top-0 z-50 w-full overflow-x-clip bg-bg">
+      <header className="sticky top-0 z-50 w-full bg-bg">
         <div className="flex w-full items-center justify-between gap-6 px-8 py-5.5">
           {/* Logo */}
           <Link
             to="/"
+            onClick={closeMenu}
             className="group flex items-center gap-3 text-ink no-underline"
           >
             <span className="flex flex-col leading-none">
@@ -112,45 +153,53 @@ export default function Header() {
           </nav>
         </div>
 
-        {/* Nav — mobile */}
-        <nav
-          id="menu-mobile"
-          ref={mobileNavRef}
-          aria-label="Principal"
-          inert={!menuOpen}
-          className={`absolute right-0 top-full flex w-full flex-col bg-bg px-8 pb-5 pt-2 text-right shadow-sm transition-[transform,opacity] duration-500 ease-in-out md:hidden ${
-            menuOpen
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
-          }`}
-        >
-          {NAV_LINKS.map((link) => {
-            const isActive = isActiveLink(link, pathname);
-            return (
-              <Link
-                key={link.href}
-                to={link.href}
-                aria-current={isActive ? "page" : undefined}
-                className={`px-1.5 py-3 text-[14.5px] no-underline ${
-                  isActive
-                    ? "font-extrabold text-moss-dark"
-                    : "font-medium text-ink"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
+        {/* Nav — mobile. A moldura com overflow-hidden recorta o menu enquanto
+            ele está fora da tela, para a página não ganhar rolagem lateral (o
+            `overflow-x: clip` não existe no Safari antes do iOS 16). Fechado,
+            o menu fica `invisible`, o que também tira os links do Tab onde o
+            `inert` não é suportado. */}
+        <div className="pointer-events-none absolute inset-x-0 top-full overflow-hidden pb-2 md:hidden">
+          <nav
+            id="menu-mobile"
+            ref={mobileNavRef}
+            aria-label="Principal"
+            inert={!menuOpen}
+            className={`flex w-full flex-col bg-bg px-8 pb-5 pt-2 text-right shadow-sm transition-[transform,opacity,visibility] duration-500 ease-in-out ${
+              menuOpen
+                ? "pointer-events-auto visible translate-x-0 opacity-100"
+                : "invisible translate-x-full opacity-0"
+            }`}
+          >
+            {NAV_LINKS.map((link) => {
+              const isActive = isActiveLink(link, pathname);
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={closeMenu}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`px-1.5 py-3 text-[14.5px] no-underline ${
+                    isActive
+                      ? "font-extrabold text-moss-dark"
+                      : "font-medium text-ink"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
       </header>
 
-      {menuOpen && (
-        <div
-          onClick={() => setMenuOpen(false)}
-          aria-hidden="true"
-          className="fixed inset-0 z-40 bg-ink/10 backdrop-blur-sm transition-opacity duration-300 md:hidden"
-        />
-      )}
+      {/* Fica sempre montado para poder aparecer e sumir com transição. */}
+      <div
+        onClick={closeMenu}
+        aria-hidden="true"
+        className={`fixed inset-0 z-40 bg-ink/10 backdrop-blur-sm transition-[opacity,visibility] duration-300 md:hidden ${
+          menuOpen ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      />
     </>
   );
 }
